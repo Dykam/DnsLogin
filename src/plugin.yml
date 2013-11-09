@@ -11,6 +11,8 @@ commands:
           reload§7 -- Reloads configuration for DnsLogin
           auth self [key] §7 -- Stores your account in the auth list. Key is generated when not provided.
           auth <username> [key]§7 -- Stores the current user in the auth list. Key is generated when not provided.
+          alt <original> <alt> §7 -- Sets the other users' key to original's key.
+          alt <alt> §7 -- Sets the other users' key to your key.
 permissions:
     dnslogin.*:
         description: Give access to most DnsLogin commands.
@@ -36,3 +38,6 @@ permissions:
         children:
             dnslogin.command: true
             dnslogin.auth: true
+    dnslogin.alt:
+        description: Whether a player can add ant alt account.
+        default: op

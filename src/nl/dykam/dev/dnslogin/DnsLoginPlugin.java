@@ -38,7 +38,7 @@ public class DnsLoginPlugin extends JavaPlugin {
       String playerName;
       if(args[1].equals("self")) {
         if(!(sender instanceof Player)) {
-          sender.sendMessage(ChatColor.RED + "Only a player can auth himself");
+          sender.sendMessage(ChatColor.DARK_PURPLE + "[DnsLogin] " + ChatColor.RED + "Only a player can auth himself");
           return false;
         }
         playerName = sender.getName();
@@ -57,8 +57,6 @@ public class DnsLoginPlugin extends JavaPlugin {
         key = new String(keyChars);
       }
 
-      key = playerName.toLowerCase() + "_" + key;
-
       getConfig().set("users." + playerName, key);
       saveConfig();
 
@@ -75,6 +73,31 @@ public class DnsLoginPlugin extends JavaPlugin {
       }
       for(String message : messages)
         sender.sendMessage(message);
+      return true;
+    } else if(args[0].equals("alt")) {
+      String from, to;
+      if(args.length == 2) {
+        if(!(sender instanceof Player)) {
+          sender.sendMessage(ChatColor.DARK_PURPLE + "[DnsLogin] " + ChatColor.RED + "Only a player can set an alt of himself");
+          return false;
+        }
+        from = sender.getName();
+        to = args[1];
+      } else {
+        from = args[1];
+        to = args[2];
+      }
+      if(!getConfig().isString("users." + from)) {
+        sender.sendMessage(ChatColor.DARK_PURPLE + "[DnsLogin] " + ChatColor.RED + from + " does not have a key set");
+        return false;
+      }
+      getConfig().set("users." + to, getConfig().getString("users." + from));
+
+      Player player = getServer().getPlayerExact(from);
+      String message = ChatColor.DARK_PURPLE + "[DnsLogin] " + ChatColor.GREEN + "Key successfully copied from " + from + " to " + to;
+      if(player != null && !player.equals(sender))
+        player.sendMessage(message);
+      sender.sendMessage(message);
       return true;
     }
     return false;
