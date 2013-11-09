@@ -14,10 +14,15 @@ public class DnsLoginVerifier implements Listener {
 
   @EventHandler
   private void onPlayerLogin(PlayerLoginEvent ple) {
-    String requiredKey = plugin.getConfig().getString("users." + ple.getPlayer().getName());
-    if(ple.getHostname().startsWith(requiredKey))
-      return;
-    plugin.getLogger().info("Login attempt with username " + ple.getPlayer().getName() + " disallowed. DnsLogin key was not found");
-    ple.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, "Player not whitelisted.");
+    try {
+      String keyName = "users." + ple.getPlayer().getName();
+      String requiredKey = plugin.getConfig().getString(keyName);
+      if(requiredKey != null && ple.getHostname().startsWith(requiredKey))
+        return;
+      plugin.getLogger().info("Login attempt with username " + ple.getPlayer().getName() + " disallowed. DnsLogin key was not found");
+      ple.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, "Player not whitelisted.");
+    } catch (Exception e) {
+      ple.disallow(PlayerLoginEvent.Result.KICK_WHITELIST, "Player not whitelisted");
+    }
   }
 }
