@@ -1,0 +1,38 @@
+name: DnsLogin
+main: nl.dykam.dev.dnslogin.DnsLoginPlugin
+version: 0.1
+commands:
+  dnslogin:
+    aliases: [dl]
+    description: Control DnsLogin.
+    permission: dnslogin.command
+    usage: |
+        Usage: /<command>
+          reload§7 -- Reloads configuration for DnsLogin
+          auth self [key] §7 -- Stores your account in the auth list. Key is generated when not provided.
+          auth <username> [key]§7 -- Stores the current user in the auth list. Key is generated when not provided.
+permissions:
+    dnslogin.*:
+        description: Give access to most DnsLogin commands.
+        children:
+            dnslogin.use: true
+            dnslogin.command: true
+            dnslogin.auth.other: true
+        default: op
+    dnslogin.use:
+        description: Whether a player can use an DnsLogin table.
+        default: op
+    dnslogin.command:
+        description: Whether a player can use /dnslogin.
+        default: op
+    dnslogin.auth:
+        description: Whether a player can add himself to authentication.
+        default: op
+        children:
+            dnslogin.command: true
+    dnslogin.auth.other:
+        description: Whether a player can use /dnslogin.
+        default: op
+        children:
+            dnslogin.command: true
+            dnslogin.auth: true
