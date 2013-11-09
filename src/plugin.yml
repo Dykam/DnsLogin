@@ -39,5 +39,5 @@ permissions:
             dnslogin.command: true
             dnslogin.auth: true
     dnslogin.alt:
-        description: Whether a player can add ant alt account.
+        description: Whether a player can add an alt account.
         default: op
